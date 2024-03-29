@@ -1,2 +1,7 @@
 ﻿  main.cpp
+C:\Users\nmoln\OneDrive\Рабочий стол\Courses\Stepik\2\PR2\PR2\main.cpp(93,15): warning C4244: return: преобразование "int" в "float", возможна потеря данных
+C:\Users\nmoln\OneDrive\Рабочий стол\Courses\Stepik\2\PR2\PR2\main.cpp(158,11): warning C4244: return: преобразование "int" в "float", возможна потеря данных
+C:\Users\nmoln\OneDrive\Рабочий стол\Courses\Stepik\2\PR2\PR2\main.cpp(169,11): warning C4244: return: преобразование "int" в "float", возможна потеря данных
+C:\Users\nmoln\OneDrive\Рабочий стол\Courses\Stepik\2\PR2\PR2\main.cpp(185,11): warning C4244: return: преобразование "int" в "float", возможна потеря данных
+C:\Users\nmoln\OneDrive\Рабочий стол\Courses\Stepik\2\PR2\PR2\main.cpp(335,16): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   PR2.vcxproj -> C:\Users\nmoln\OneDrive\Рабочий стол\Courses\Stepik\2\PR2\x64\Debug\PR2.exe
