@@ -17,6 +17,8 @@ using std::chrono::duration_cast;
 time_point<steady_clock, duration<__int64, ratio<1, 1000000000>>> start, end;
 nanoseconds result;
 
+int arraySize = 16;
+int arrayEnd = 0;
 const char separator[] = "------------------------------------------------------------------------------------------------------------------------";
 
 struct ListNode 
@@ -27,6 +29,35 @@ struct ListNode
 };
 
 ListNode* list = new ListNode;
+int* array = new int[arraySize];
+
+int* expandArray(int* array) 
+{
+	int* tmp = array;
+	array = new int[arraySize * 2];
+	for (int i = 0; i < arraySize; i++) {
+		*(array+i) = *(tmp+i);
+	}
+	arraySize *= 2;
+	delete[] tmp;
+	return array;
+}
+
+int* fillArray(int* array) 
+{
+	int a;
+	int i = 0;
+	while ((cin.get() != '\n') && ((cin.unget()) >> a)) {
+		if ((i + 1) == arraySize) {
+			array = expandArray(array);
+		}
+		*(array + i) = a;
+		i++;
+	}
+	arrayEnd = i;
+	
+	return array;
+}
 
 ListNode* createList(ListNode* curr) 
 {
@@ -48,6 +79,15 @@ void showList(ListNode* curr)
 	while (curr != nullptr) {
 		cout << curr->data << ' ';
 		curr = curr->next;
+	}
+	cout << '\n';
+}
+
+void showArray(int* array) 
+{
+	cout << "Элементы динмас: ";
+	for (int i = 0; i < arrayEnd; i++) {
+		cout << *(array + i) << ' ';
 	}
 	cout << '\n';
 }
@@ -149,6 +189,29 @@ bool insertValue(ListNode* curr, int index, int value)
 	}
 }
 
+int* insertValueArray(int* array, int value, int index) 
+{
+	int* tmp = array;
+	arrayEnd++;
+	if (arrayEnd > arraySize) {
+		arraySize *= 2;
+	}
+	array = new int[arraySize];
+
+	for (int i = 0, j = 0; i < arrayEnd; i++, j++) {
+		if (index == i) {
+			*(array + i) = value;
+			j--;
+		}
+		else {
+			*(array + i) = *(tmp + j);
+		}
+	}
+	delete[] tmp;
+
+	return array;
+}
+
 float removeByIndex(ListNode* curr, int index) 
 {
 	if (getLength(curr) > index && index >= 0) {
@@ -229,6 +292,45 @@ int removeByValue(ListNode* curr, int value)
 	else {
 		return -1;
 	}
+}
+
+int* removeByIndexArray(int* array, int index) 
+{
+	int* tmp = array;
+	arrayEnd--;
+	if (arrayEnd < arraySize / 2) {
+		arraySize /= 2;
+	}
+	array = new int[arraySize];
+
+	for (int i = 0, j = 0; i < arrayEnd; i++, j++) {
+		if (index == i) {
+			j++;
+		}
+		*(array + i) = *(tmp + j);
+	}
+	delete[] tmp;
+
+	return array;
+}
+
+int* removeByValueArray(int* array, int value) {
+	int* tmp = array;
+	arrayEnd--;
+	if (arrayEnd < arraySize / 2) {
+		arraySize /= 2;
+	}
+	array = new int[arraySize];
+
+	for (int i = 0, j = 0; i < arrayEnd; i++, j++) {
+		if (value == *(tmp+i)) {
+			j++;
+		}
+		*(array + i) = *(tmp + j);
+	}
+	delete[] tmp;
+
+	return array;
 }
 
 bool swapElements(ListNode* curr, int i, int j) 
@@ -318,7 +420,10 @@ void launch()
 
 		else if (command == 's') {
 			showList(list);
+			showArray(array);
 		}
+
+		// 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
 
 		else if (command == '1') {
 			cin >> command;
@@ -346,7 +451,24 @@ void launch()
 					end = steady_clock::now();
 					result = duration_cast<nanoseconds>(end - start);
 					cout << "Время на создание двухсвязного списка: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+					start = steady_clock::now();
+					int i = 0;
+					curr = list;
+					while (curr != nullptr) {
+						if ((i + 1) == arraySize) {
+							array = expandArray(array);
+						}
+						*(array + i) = curr->data;
+						curr = curr->next;
+						i++;
+					}
+					arrayEnd = i;
+					end = steady_clock::now();
+					result = duration_cast<nanoseconds>(end - start);
+					cout << "Время на создание динамического массива: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
 				}
+
 				else {
 					cout << "Список не должен быть пустым!!!\n";
 				}
@@ -357,15 +479,24 @@ void launch()
 					clearList(list);
 				}
 
-				int i = 0;
-
-				cout << "Введите элементы: ";
+				cout << "Введите элементы списка: ";
 				checkForNumbers();
 				start = steady_clock::now();
 				createList(list);
 				end = steady_clock::now();
+
 				result = duration_cast<nanoseconds>(end - start);
 				cout << "Время на создание двухсвязного списка: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+				cout << "Введите элементы динамического массива: ";
+				checkForNumbers();
+				start = steady_clock::now();
+				array = fillArray(array);
+				end = steady_clock::now();
+
+				result = duration_cast<nanoseconds>(end - start);
+				cout << "Время на создание динамического массива: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
 			}
 		}
 
@@ -392,7 +523,27 @@ void launch()
 					}
 
 					cout << "Время на получение элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+					start = steady_clock::now();
+					if (index >= 0 && index < arrayEnd) {
+						res = array[index];
+					}
+					else {
+						res = -1;
+					}
+					end = steady_clock::now();
+					result = duration_cast<nanoseconds>(end - start);
+
+					if (res == -1) {
+						cout << "Введённый индекс выходит за рамки динамического массива!!!\n";
+					}
+					else {
+						cout << "На позиции " << index << " находится значение " << res << '\n';
+					}
+
+					cout << "Время на получение элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
 				}
+
 				else if (command == 'v') 
 				{
 					cout << "Введите значение в списке: ";
@@ -405,6 +556,26 @@ void launch()
 
 					if (res == -1) {
 						cout << "Введённое значение отсутствует в списке!!!\n";
+					}
+					else {
+						cout << "Элемент со значением " << value << " находится на позиции " << res << '\n';
+					}
+
+					cout << "Время на получение индекса: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+					start = steady_clock::now();
+					res = -1;
+					for (int i = 0; i < arrayEnd; i++) {
+						if (*(array + i) == value) {
+							res = i;
+							break;
+						}
+					}
+					end = steady_clock::now();
+					result = duration_cast<nanoseconds>(end - start);
+
+					if (res == -1) {
+						cout << "Введённое значение отсутствует в динамическом массиве!!!\n";
 					}
 					else {
 						cout << "Элемент со значением " << value << " находится на позиции " << res << '\n';
@@ -424,6 +595,26 @@ void launch()
 
 				start = steady_clock::now();
 				res = insertValue(list, index, value);
+				end = steady_clock::now();
+				result = duration_cast<nanoseconds>(end - start);
+
+				if (!res) {
+					cout << "Вставка не произведена потому что данная позицая удалена от ближайшего элемента больше чем на 1, либо позиция отрицательна\n";
+				}
+				else {
+					cout << "Вставка была произведена, вставленный элемент на позиции " << index << '\n';
+				}
+
+				cout << "Время на вставку элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+				start = steady_clock::now();
+				if (index >= 0 && index < (arrayEnd+1)) {
+					array = insertValueArray(array, value, index);
+					res = true;
+				}
+				else {
+					res = false;
+				}
 				end = steady_clock::now();
 				result = duration_cast<nanoseconds>(end - start);
 
@@ -458,7 +649,28 @@ void launch()
 					}
 
 					cout << "Время на удаление элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+					res = false;
+					int value;
+					start = steady_clock::now();
+					if (index >= 0 && index < arrayEnd) {
+						value = *(array+index);
+						array = removeByIndexArray(array, index);
+						res = true;
+					}
+					end = steady_clock::now();
+					result = duration_cast<nanoseconds>(end - start);
+					
+					if (!res) {
+						cout << "Введённый индекс выходит за рамки динамического массива!!!\n";
+					}
+					else {
+						cout << "С позиции " << index << " был удалён элемент со значением " << value << '\n';
+					}
+
+					cout << "Время на удаление элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
 				}
+
 				else if (command == 'v')
 				{
 					cout << "Введите значение в списке: ";
@@ -471,6 +683,20 @@ void launch()
 
 					if (res == -1) {
 						cout << "Введённое значение отсутствует в списке!!!\n";
+					}
+					else {
+						cout << "Элемент со значением " << value << " был удалён с позиции " << res << '\n';
+					}
+
+					cout << "Время на удаление элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+					start = steady_clock::now();
+					array = removeByValueArray(array, value);
+					end = steady_clock::now();
+					result = duration_cast<nanoseconds>(end - start);
+
+					if (res == -1) {
+						cout << "Введённое значение отсутствует в динамическом массиве!!!\n";
 					}
 					else {
 						cout << "Элемент со значением " << value << " был удалён с позиции " << res << '\n';
@@ -492,6 +718,22 @@ void launch()
 
 				if (!res) {
 					cout << "Введённые индексы выходят за рамки списка\n";
+				}
+				else {
+					cout << "Элемента на позициях " << i << " и " << j << " поменялись местами\n";
+				}
+
+				cout << "Время на обмен элементов: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+				start = steady_clock::now();
+				if (res) {
+					swap(*(array + i), *(array + j));
+				}
+				end = steady_clock::now();
+				result = duration_cast<nanoseconds>(end - start);
+				
+				if (!res) {
+					cout << "Введённые индексы выходят за рамки динамического массива\n";
 				}
 				else {
 					cout << "Элемента на позициях " << i << " и " << j << " поменялись местами\n";
