@@ -743,6 +743,49 @@ void launch()
 			}
 		}
 
+		else if (command == 'i') {
+		if (list->next != nullptr) {
+			cout << "Введите число: ";
+			int n;
+			cin >> n;
+	
+	
+	
+			start = steady_clock::now();
+			ListNode* curr = list;
+			for (int i = 0; i < getLength(list); i++) {
+				if (i % 2 == 1) {
+					curr->data -= n;
+				}
+				else {
+					curr->data *= n;
+				}
+				curr = curr->next;
+			}
+			end = steady_clock::now();
+			result = duration_cast<nanoseconds>(end - start);
+	
+			cout << "Время на изменение значений элементов в двухсвязном списке: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+			showList(list);
+	
+			start = steady_clock::now();
+			ListNode* curr = list;
+			for (int i = 0; i < arrayEnd; i++) {
+				if (i % 2 == 1) {
+					*(array + i) -= n;
+				}
+				else {
+					*(array + i) *= n;
+				}
+			}
+			end = steady_clock::now();
+			result = duration_cast<nanoseconds>(end - start);
+	
+			cout << "Время на изменение значений элементов в динамическом массиве: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+
+	}
+}
+		
 		cout << separator << '\n';
 		cout << "Введите комманду: ";
 		cin >> command;
