@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <chrono>
 #include <time.h>
 #include <Windows.h>
@@ -21,7 +21,7 @@ int arraySize = 16;
 int arrayEnd = 0;
 const char separator[] = "------------------------------------------------------------------------------------------------------------------------";
 
-struct ListNode 
+struct ListNode
 {
 	int data = NULL;
 	ListNode* next = nullptr;
@@ -31,19 +31,19 @@ struct ListNode
 ListNode* list = new ListNode;
 int* array = new int[arraySize];
 
-int* expandArray(int* array) 
+int* expandArray(int* array)
 {
 	int* tmp = array;
 	array = new int[arraySize * 2];
 	for (int i = 0; i < arraySize; i++) {
-		*(array+i) = *(tmp+i);
+		*(array + i) = *(tmp + i);
 	}
 	arraySize *= 2;
 	delete[] tmp;
 	return array;
 }
 
-int* fillArray(int* array) 
+int* fillArray(int* array)
 {
 	int a;
 	int i = 0;
@@ -55,11 +55,11 @@ int* fillArray(int* array)
 		i++;
 	}
 	arrayEnd = i;
-	
+
 	return array;
 }
 
-ListNode* createList(ListNode* curr) 
+ListNode* createList(ListNode* curr)
 {
 	if ((cin.get() != '\n') && ((cin.unget()) >> curr->data)) {
 		ListNode* next = new ListNode;
@@ -73,7 +73,7 @@ ListNode* createList(ListNode* curr)
 	}
 }
 
-void showList(ListNode* curr) 
+void showList(ListNode* curr)
 {
 	cout << "Элементы списка: ";
 	while (curr != nullptr) {
@@ -83,7 +83,7 @@ void showList(ListNode* curr)
 	cout << '\n';
 }
 
-void showArray(int* array) 
+void showArray(int* array)
 {
 	cout << "Элементы динмас: ";
 	for (int i = 0; i < arrayEnd; i++) {
@@ -92,7 +92,7 @@ void showArray(int* array)
 	cout << '\n';
 }
 
-void checkForNumbers() 
+void checkForNumbers()
 {
 	char a = cin.get();
 	while (a < '0' || a > '9') {
@@ -102,7 +102,7 @@ void checkForNumbers()
 	cin.unget();
 }
 
-void clearList(ListNode* list) 
+void clearList(ListNode* list)
 {
 	ListNode* curr = list;
 	while (curr->next != nullptr) {
@@ -115,7 +115,7 @@ void clearList(ListNode* list)
 	list->data = NULL;
 }
 
-int getLength(ListNode* curr) 
+int getLength(ListNode* curr)
 {
 	int res = 0;
 	while (curr != nullptr) {
@@ -125,7 +125,7 @@ int getLength(ListNode* curr)
 	return res;
 }
 
-float getValue(ListNode* curr, int index) 
+float getValue(ListNode* curr, int index)
 {
 	int i = 0;
 	while (curr != nullptr) {
@@ -138,7 +138,7 @@ float getValue(ListNode* curr, int index)
 	return 0.5;
 }
 
-int getIndex(ListNode* curr, int value) 
+int getIndex(ListNode* curr, int value)
 {
 	int i = 0;
 	while (curr != nullptr) {
@@ -151,12 +151,12 @@ int getIndex(ListNode* curr, int value)
 	return -1;
 }
 
-bool insertValue(ListNode* curr, int index, int value) 
+bool insertValue(ListNode* curr, int index, int value)
 {
 	if (index < getLength(curr) && index >= 0) {
 		ListNode* listNode = new ListNode;
 		int i = 0;
-		while (i < (index-1)) {
+		while (i < (index - 1)) {
 			curr = curr->next;
 			i++;
 		}
@@ -189,7 +189,7 @@ bool insertValue(ListNode* curr, int index, int value)
 	}
 }
 
-int* insertValueArray(int* array, int value, int index) 
+int* insertValueArray(int* array, int value, int index)
 {
 	int* tmp = array;
 	arrayEnd++;
@@ -212,7 +212,7 @@ int* insertValueArray(int* array, int value, int index)
 	return array;
 }
 
-float removeByIndex(ListNode* curr, int index) 
+float removeByIndex(ListNode* curr, int index)
 {
 	if (getLength(curr) > index && index >= 0) {
 		if (getLength(curr) == 1 && index == 0) {
@@ -253,7 +253,7 @@ float removeByIndex(ListNode* curr, int index)
 	}
 }
 
-int removeByValue(ListNode* curr, int value) 
+int removeByValue(ListNode* curr, int value)
 {
 	int i = 0;
 	while (curr != nullptr && curr->data != value) {
@@ -294,7 +294,7 @@ int removeByValue(ListNode* curr, int value)
 	}
 }
 
-int* removeByIndexArray(int* array, int index) 
+int* removeByIndexArray(int* array, int index)
 {
 	int* tmp = array;
 	arrayEnd--;
@@ -323,7 +323,7 @@ int* removeByValueArray(int* array, int value) {
 	array = new int[arraySize];
 
 	for (int i = 0, j = 0; i < arrayEnd; i++, j++) {
-		if (value == *(tmp+i)) {
+		if (value == *(tmp + i)) {
 			j++;
 		}
 		*(array + i) = *(tmp + j);
@@ -333,7 +333,7 @@ int* removeByValueArray(int* array, int value) {
 	return array;
 }
 
-bool swapElements(ListNode* curr, int i, int j) 
+bool swapElements(ListNode* curr, int i, int j)
 {
 	if (i > j) {
 		swap(i, j);
@@ -399,7 +399,7 @@ bool swapElements(ListNode* curr, int i, int j)
 	return 0;
 }
 
-void launch() 
+void launch()
 {
 	start = steady_clock::now();
 	result = duration_cast<nanoseconds>(end - start);
@@ -413,7 +413,7 @@ void launch()
 			cout << "Программа завершена по воле пользователя\n";
 			break;
 		}
-		
+
 		else if (command == 'c') {
 			cout << commands;
 		}
@@ -435,7 +435,7 @@ void launch()
 				cout << "Введите размер списка: ";
 				int N;
 				cin >> N;
-				
+
 				if (N > 0) {
 					srand(time(NULL));
 					start = steady_clock::now();
@@ -544,7 +544,7 @@ void launch()
 					cout << "Время на получение элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
 				}
 
-				else if (command == 'v') 
+				else if (command == 'v')
 				{
 					cout << "Введите значение в списке: ";
 					int value, res;
@@ -608,7 +608,7 @@ void launch()
 				cout << "Время на вставку элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
 
 				start = steady_clock::now();
-				if (index >= 0 && index < (arrayEnd+1)) {
+				if (index >= 0 && index < (arrayEnd + 1)) {
 					array = insertValueArray(array, value, index);
 					res = true;
 				}
@@ -645,7 +645,7 @@ void launch()
 						cout << "Введённый индекс выходит за рамки списка!!!\n";
 					}
 					else {
-						cout << "С позиции " << index << " был удалён элемент со значением "<< res << '\n';
+						cout << "С позиции " << index << " был удалён элемент со значением " << res << '\n';
 					}
 
 					cout << "Время на удаление элемента: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
@@ -654,13 +654,13 @@ void launch()
 					int value;
 					start = steady_clock::now();
 					if (index >= 0 && index < arrayEnd) {
-						value = *(array+index);
+						value = *(array + index);
 						array = removeByIndexArray(array, index);
 						res = true;
 					}
 					end = steady_clock::now();
 					result = duration_cast<nanoseconds>(end - start);
-					
+
 					if (!res) {
 						cout << "Введённый индекс выходит за рамки динамического массива!!!\n";
 					}
@@ -731,7 +731,7 @@ void launch()
 				}
 				end = steady_clock::now();
 				result = duration_cast<nanoseconds>(end - start);
-				
+
 				if (!res) {
 					cout << "Введённые индексы выходят за рамки динамического массива\n";
 				}
@@ -744,48 +744,47 @@ void launch()
 		}
 
 		else if (command == 'i') {
-		if (list->next != nullptr) {
-			cout << "Введите число: ";
-			int n;
-			cin >> n;
-	
-	
-	
-			start = steady_clock::now();
-			ListNode* curr = list;
-			for (int i = 0; i < getLength(list); i++) {
-				if (i % 2 == 1) {
-					curr->data -= n;
-				}
-				else {
-					curr->data *= n;
-				}
-				curr = curr->next;
-			}
-			end = steady_clock::now();
-			result = duration_cast<nanoseconds>(end - start);
-	
-			cout << "Время на изменение значений элементов в двухсвязном списке: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
-			showList(list);
-	
-			start = steady_clock::now();
-			ListNode* curr = list;
-			for (int i = 0; i < arrayEnd; i++) {
-				if (i % 2 == 1) {
-					*(array + i) -= n;
-				}
-				else {
-					*(array + i) *= n;
-				}
-			}
-			end = steady_clock::now();
-			result = duration_cast<nanoseconds>(end - start);
-	
-			cout << "Время на изменение значений элементов в динамическом массиве: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+			if (list->next != nullptr) {
+				cout << "Введите число: ";
+				int n;
+				cin >> n;
 
-	}
-}
-		
+
+
+				start = steady_clock::now();
+				ListNode* curr = list;
+				for (int i = 0; i < getLength(list); i++) {
+					if (i % 2 == 1) {
+						curr->data -= n;
+					}
+					else {
+						curr->data *= n;
+					}
+					curr = curr->next;
+				}
+				end = steady_clock::now();
+				result = duration_cast<nanoseconds>(end - start);
+
+				cout << "Время на изменение значений элементов в двухсвязном списке: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+				showList(list);
+
+				start = steady_clock::now();
+				for (int i = 0; i < arrayEnd; i++) {
+					if (i % 2 == 1) {
+						*(array + i) -= n;
+					}
+					else {
+						*(array + i) *= n;
+					}
+				}
+				end = steady_clock::now();
+				result = duration_cast<nanoseconds>(end - start);
+
+				cout << "Время на изменение значений элементов в динамическом массиве: " << (result.count() / 1000000.0) << "ms(" << result.count() << "ns)\n";
+				showArray(array);
+			}
+		}
+
 		cout << separator << '\n';
 		cout << "Введите комманду: ";
 		cin >> command;
@@ -794,7 +793,7 @@ void launch()
 	} while (true);
 }
 
-int main() 
+int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
