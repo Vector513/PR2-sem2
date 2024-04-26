@@ -96,6 +96,13 @@ void checkForNumbers()
 {
 	char a = cin.get();
 	while (a < '0' || a > '9') {
+		if (a == '-') {
+			a = cin.get();
+			if (a >= '0' && a <= '9') {
+				cin.unget();
+				break;
+			}
+		}
 		//cout << "Следует вводить числа: ";
 		cin >> a;
 	}
